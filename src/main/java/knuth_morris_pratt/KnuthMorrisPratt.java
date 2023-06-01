@@ -6,7 +6,7 @@ public class KnuthMorrisPratt {
         int[] lsp = computeLongestSuffixPrefixTable(pattern);
         int j = 0;
         for (int i = 0; i < array.length; i++) {
-            while (j > 0 && array[i] == pattern[j]) {
+            while (j > 0 && array[i] != pattern[j]) {
                 j = lsp[j - 1];
             }
             if (array[i] == pattern[j]) {

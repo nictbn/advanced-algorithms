@@ -1,14 +1,47 @@
 package knuth_morris_pratt;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class KnuthMorrisPrattTest {
+    KnuthMorrisPratt kmp;
+    @BeforeEach
+    void setUp() {
+        kmp = new KnuthMorrisPratt();
+    }
+
+    @Test
+    void searchTest() {
+        String array = "abazacabababac";
+        String pattern = "ababac";
+        int index = kmp.search(array.toCharArray(), pattern.toCharArray());
+        assertEquals(8, index);
+
+        array = "aabaaabacaz";
+        pattern = "aabacaz";
+        index = kmp.search(array.toCharArray(), pattern.toCharArray());
+        assertEquals(4, index);
+
+        array = "this is a test";
+        pattern = "is a";
+        index = kmp.search(array.toCharArray(), pattern.toCharArray());
+        assertEquals(5, index);
+
+        array = "cantfindtheindex";
+        pattern = "foo";
+        index = kmp.search(array.toCharArray(), pattern.toCharArray());
+        assertEquals(-1, index);
+
+        array = "cantfindtheindex";
+        pattern = "foo";
+        index = kmp.search(array.toCharArray(), pattern.toCharArray());
+        assertEquals(-1, index);
+    }
 
     @Test
     void computeLongestSuffixPrefixTable() {
-        KnuthMorrisPratt kmp = new KnuthMorrisPratt();
         int[] actual = kmp.computeLongestSuffixPrefixTable(new char[]{'a', 'b', 'a', 'b', 'a', 'c'});
         int[] expected = new int[]{0, 0, 1, 2, 3, 0};
         assertArrayEquals(expected, actual);
