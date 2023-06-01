@@ -4,6 +4,9 @@ public class RabinKarp {
     private final int prime = 3;
 
     public int search(char[] array, char[] pattern) {
+        if (array == null || pattern == null) {
+            return -1;
+        }
         int n = array.length;
         int m = pattern.length;
         int lastChar = n - m;
@@ -45,7 +48,7 @@ public class RabinKarp {
         return hash;
     }
 
-    private int shiftCharacterValue(char c) {
+    int shiftCharacterValue(char c) {
         return c - 96;
     }
 }
