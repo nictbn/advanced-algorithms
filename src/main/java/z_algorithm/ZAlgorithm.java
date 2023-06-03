@@ -2,6 +2,27 @@ package z_algorithm;
 
 public class ZAlgorithm {
     private char SEPARATOR = '$';
+
+    public int search(char[] pattern, char[] array) {
+        int z[] = createZTable(pattern, array);
+        for (int i = pattern.length + 1; i < z.length; i++) {
+            if (z[i] == pattern.length) {
+                return i - pattern.length - 1;
+            }
+        }
+        return -1;
+    }
+
+    public int[] searchAll(char[] pattern, char[] array) {
+        int[] result = new int[array.length];
+        int z[] = createZTable(pattern, array);
+        for (int i = pattern.length + 1; i < z.length; i++) {
+            if (z[i] == pattern.length) {
+                result[i - pattern.length - 1] = z[i];
+            }
+        }
+        return result;
+    }
     public int[] createZTable(char[] pattern, char[] array) {
         int[] z = new int[pattern.length + array.length + 1];
         char[] longArray = createLongArray(pattern, array);
