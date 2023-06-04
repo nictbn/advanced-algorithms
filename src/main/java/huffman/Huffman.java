@@ -21,4 +21,24 @@ public class Huffman {
         }
         return queue;
     }
+
+    public HuffmanNode createHuffmanTree(PriorityQueue<HuffmanNode> queue) {
+        HuffmanNode root = null;
+        while (queue.size() > 0) {
+            root = getTwoLeastUsedAsOneNode(queue);
+            if (queue.size() > 0) {
+                queue.add(root);
+            }
+        }
+        return root;
+    }
+
+    public HuffmanNode getTwoLeastUsedAsOneNode(PriorityQueue<HuffmanNode> queue) {
+        HuffmanNode node1 = queue.poll();
+        HuffmanNode node2 = queue.poll();
+        HuffmanNode root = new HuffmanNode('-', node1.getFrequency() + node2.getFrequency());
+        root.setLeft(node1);
+        root.setRight(node2);
+        return root;
+    }
 }
