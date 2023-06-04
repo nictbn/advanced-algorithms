@@ -33,6 +33,37 @@ public class Huffman {
         return root;
     }
 
+    public String compress(char[] text) {
+        int[] frequencies = createFrequencyTable(text);
+        PriorityQueue<HuffmanNode> queue = createPriorityQueue(frequencies);
+        HuffmanNode root = createHuffmanTree(queue);
+        String compressed = encodeString(text, root);
+        return compressed;
+    }
+
+    public String encodeString(char[] text, HuffmanNode root) {
+        StringBuilder s = new StringBuilder();
+        String[] array = new String[CHARACTER_LIMIT];
+        generateBytes(array, root, new StringBuilder());
+        for (int i = 0; i < text.length; i++) {
+            s.append(array[text[i]]);
+        }
+        return s.toString();
+    }
+
+    public void generateBytes(String[] array, HuffmanNode root, StringBuilder s) {
+        if (root.getCharacter() == '-') {
+            s.append("0");
+            generateBytes(array, root.getLeft(), s);
+            s.append("1");
+            generateBytes(array, root.getRight(), s);
+        } else {
+            System.out.println(root.getCharacter() + " - " + s.toString());
+            array[root.getCharacter()] = s.toString();
+            s.deleteCharAt(s.length() - 1);
+        }
+    }
+
     public HuffmanNode getTwoLeastUsedAsOneNode(PriorityQueue<HuffmanNode> queue) {
         HuffmanNode node1 = queue.poll();
         HuffmanNode node2 = queue.poll();
