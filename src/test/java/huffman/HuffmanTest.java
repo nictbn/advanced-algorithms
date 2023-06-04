@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class HuffmanTest {
     public static final char[] PATTERN_1 = "aabbbcd".toCharArray();
+    public static final String ENCODING = "1010000110111";
     Huffman h;
     @BeforeEach
     void setUp() {
@@ -49,6 +50,7 @@ class HuffmanTest {
         assertEquals(3, Objects.requireNonNull(queue.poll()).getFrequency());
 
         assertEquals(0, queue.size());
+        assertEquals("\u0001:a2:b3:c1:d1\u0002", h.header.toString());
     }
 
     @Test
@@ -146,6 +148,46 @@ class HuffmanTest {
         PriorityQueue<HuffmanNode> queue = h.createPriorityQueue(frequencies);
         HuffmanNode root = h.createHuffmanTree(queue);
         String s = h.encodeString(PATTERN_1, root);
-        assertEquals("1010000110111", s);
+        assertEquals(ENCODING, s);
+    }
+
+    @Test
+    public void parseHeaderAsFrequencyTest() {
+        char[] c = ("\u0001:a2:b3:c1:d1:\u0002" + ENCODING).toCharArray();
+        int[] freq = h.parseHeaderAsFrequency(c);
+        assertEquals(2, freq['a']);
+        assertEquals(3, freq['b']);
+        assertEquals(1, freq['c']);
+        assertEquals(1, freq['d']);
+    }
+
+    @Test
+    public void isLeafTest() {
+        HuffmanNode root = new HuffmanNode('-',2);
+        HuffmanNode leftNode = new HuffmanNode('a',2);
+        root.left = leftNode;
+        assertTrue(h.isLeaf(leftNode));
+        assertFalse(h.isLeaf(root));
+        assertFalse(h.isLeaf(null));
+    }
+
+    @Test
+    public void decodeStringTest() {
+        Huffman huffman = new Huffman();
+        char[] c = ("\u0001:a2:b3:c1:d1\u0002" + ENCODING).toCharArray();
+        int[] freq = huffman.parseHeaderAsFrequency(c);
+        PriorityQueue<HuffmanNode> queue = huffman.createPriorityQueue(freq);
+        HuffmanNode root = huffman.createHuffmanTree(queue);
+        String decoded = huffman.decodeString(c, root);
+        assertEquals("aabbbcd", decoded);
+        assertNotSame("aaabbcd", decoded);
+    }
+
+    @Test
+    public void decompressTest() {
+        Huffman huffman = new Huffman();
+        char[] c = ("\u0001:a2:b3:c1:d1\u0002" + ENCODING).toCharArray();
+        char[] decompressed = huffman.decompress(c);
+        assertArrayEquals(PATTERN_1, decompressed);
     }
 }
