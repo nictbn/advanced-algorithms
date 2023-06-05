@@ -6,14 +6,15 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PrefixTreeTest {
+    PrefixTree tree;
 
     @BeforeEach
     void setUp() {
+        tree = new PrefixTree();
     }
 
     @Test
     public void insertTest() {
-        PrefixTree tree = new PrefixTree();
         tree.insert("cat".toCharArray(), 1);
         tree.insert("door".toCharArray(), 2);
         tree.insert("cats".toCharArray(), 3);
@@ -25,5 +26,21 @@ class PrefixTreeTest {
         assertEquals(0, tree.root.getChild('c').getChild('a').id);
         assertEquals('t', tree.root.getChild('c').getChild('a').getChild('t').c);
         assertEquals(1, tree.root.getChild('c').getChild('a').getChild('t').id);
+    }
+
+    @Test
+    public void findTest() {
+        tree.insert("cat".toCharArray(), 1);
+        tree.insert("door".toCharArray(), 2);
+        tree.insert("cats".toCharArray(), 3);
+
+        assertEquals(3, tree.find("cats".toCharArray()).id);
+        assertEquals(2, tree.find("door".toCharArray()).id);
+        assertEquals(1, tree.find("cat".toCharArray()).id);
+
+        assertTrue(tree.find("cats".toCharArray()).isWord);
+        assertTrue(tree.find("door".toCharArray()).isWord);
+        assertTrue(tree.find("cat".toCharArray()).isWord);
+        assertNull(tree.find("cantfind".toCharArray()));
     }
 }

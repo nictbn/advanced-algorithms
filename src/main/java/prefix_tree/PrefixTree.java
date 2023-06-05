@@ -21,4 +21,16 @@ public class PrefixTree {
         current.isWord = true;
         current.id = id;
     }
+
+    public PrefixNode find(char[] word) {
+        PrefixNode current = root;
+        for (int i = 0; i < word.length; i++) {
+            if (current.hasChild(word[i])) {
+                current = current.getChild(word[i]);
+            } else {
+                return null;
+            }
+        }
+        return current;
+    }
 }
