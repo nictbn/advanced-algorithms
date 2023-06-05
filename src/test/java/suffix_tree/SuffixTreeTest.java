@@ -20,4 +20,10 @@ class SuffixTreeTest {
         String result = Arrays.toString(t.addUnique("bana".toCharArray()));
         assertEquals(expected, result);
     }
+
+    @Test
+    public void buildSuffixTreeTest() {
+        t.buildSuffixTree();
+        System.out.println(t.root);
+    }
 }
