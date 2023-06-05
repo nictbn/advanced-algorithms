@@ -33,4 +33,33 @@ public class PrefixTree {
         }
         return current;
     }
+
+    public boolean delete (char[] word) {
+        return delete(word, root, 0);
+    }
+
+    public boolean delete(char[] word, PrefixNode node, int wordIndex) {
+        if (wordIndex == word.length - 1) {
+            PrefixNode w = node.getChild(word[wordIndex]);
+            w.isWord = false;
+            w.id = 0;
+            if (w.canDelete()) {
+                node.children.remove(word[wordIndex]);
+                return true;
+            }
+        } else {
+            if (!node.hasChild(word[wordIndex])) {
+                return false;
+            }
+            boolean canDelete = delete(word, node.getChild(word[wordIndex]), ++wordIndex);
+            if (canDelete) {
+                if (!node.getChild(word[--wordIndex]).isWord) {
+                    node.children.remove(word[wordIndex]);
+                    return true;
+                }
+                return false;
+            }
+        }
+        return false;
+    }
 }

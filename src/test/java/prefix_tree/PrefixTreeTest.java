@@ -43,4 +43,20 @@ class PrefixTreeTest {
         assertTrue(tree.find("cat".toCharArray()).isWord);
         assertNull(tree.find("cantfind".toCharArray()));
     }
+
+    @Test
+    public void deleteTest() {
+        tree.insert("cat".toCharArray(), 1);
+        tree.insert("cats".toCharArray(), 2);
+        tree.insert("door".toCharArray(), 3);
+        tree.insert("done".toCharArray(), 4);
+        tree.insert("horse".toCharArray(), 5);
+        System.out.println(tree.root);
+        tree.delete("horse".toCharArray());
+        System.out.println(tree.root);
+        tree.delete("cat".toCharArray());
+        System.out.println(tree.root);
+        tree.delete("cats".toCharArray());
+        System.out.println(tree.root);
+    }
 }
