@@ -1,5 +1,6 @@
 package suffix_trie;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -7,10 +8,14 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SuffixTrieTest {
+    SuffixTrie t;
+    @BeforeEach
+    void setUp() {
+        t = new SuffixTrie("banana");
+    }
 
     @Test
-    void insertTest() {
-        SuffixTrie t = new SuffixTrie("banana");
+    void insertSuffixTest() {
         assertNotNull(t.root.children['b']);
         assertNotNull(t.root.children['a']);
         assertNotNull(t.root.children['n']);
@@ -29,7 +34,6 @@ class SuffixTrieTest {
 
     @Test
     public void searchTest() {
-        SuffixTrie t = new SuffixTrie("banana");
         List<Integer> result1 = t.search("ana");
         assertEquals(2, result1.size());
         assertEquals(3, result1.get(0));
@@ -46,7 +50,6 @@ class SuffixTrieTest {
 
     @Test
     public void isSuffixTest() {
-        SuffixTrie t = new SuffixTrie("banana");
         assertTrue(t.isSuffix("ana"));
         assertTrue(t.isSuffix("na"));
         assertTrue(t.isSuffix("a"));
@@ -56,7 +59,6 @@ class SuffixTrieTest {
 
     @Test
     public void isSubstringTest() {
-        SuffixTrie t = new SuffixTrie("banana");
         assertTrue(t.isSubstring("nan"));
         assertTrue(t.isSubstring("nana"));
         assertTrue(t.isSubstring("anana"));
