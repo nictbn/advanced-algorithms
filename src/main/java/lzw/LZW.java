@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 public class LZW {
-    private int dictionarySize = 256;
     public List<Integer> compress(String text) {
+        int dictionarySize = 256;
         if (text == null) {
             return null;
         }
@@ -32,5 +32,33 @@ public class LZW {
             result.add(dictionary.get(previous));
         }
         return result;
+    }
+
+    public String decompress(List<Integer> compressed) {
+        int dictionarySize = 256;
+        if (compressed == null) {
+            return null;
+        }
+        Map<Integer, String> dictionary = new HashMap<>();
+
+        for (int i = 0; i < dictionarySize; i++) {
+            dictionary.put(i, Character.toString(i));
+        }
+        String previous = Character.toString(compressed.remove(0));
+        StringBuilder result = new StringBuilder(previous);
+        for (int j : compressed) {
+            String combined;
+            if (dictionary.containsKey(j)) {
+                combined = dictionary.get(j);
+            } else if(j == dictionarySize) {
+                combined = previous + previous.charAt(0);
+            } else {
+                return "-1";
+            }
+            result.append(combined);
+            dictionary.put(dictionarySize++, previous + combined.charAt(0));
+            previous = combined;
+        }
+        return result.toString();
     }
 }
