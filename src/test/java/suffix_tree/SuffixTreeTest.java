@@ -23,7 +23,9 @@ class SuffixTreeTest {
 
     @Test
     public void buildSuffixTreeTest() {
-        t.buildSuffixTree();
-        System.out.println(t.root);
+        SuffixTree tree = new SuffixTree("aabaaca".toCharArray());
+        tree.buildSuffixTree();
+        tree.dfsTraversal();
+        System.out.println(tree.root);
     }
 }
