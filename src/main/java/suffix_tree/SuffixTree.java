@@ -85,7 +85,6 @@ public class SuffixTree {
                         }
                         lastInternalNode = internalNode;
                         internalNode.suffixLink = root;
-                        remaining--;
                         System.out.println("Phase(" + input[i] + ") Rule 2 Ext - changed node (" + internalNode.start + "-" + internalNode.end.end + "):" + input[internalNode.start]);
                         System.out.println("Phase(" + input[i] + ") Rule 2 Ext --- children[edge] " + edge.start + ":" + input[edge.start]);
                         System.out.println("Phase(" + input[i] + ") Rule 2 Ext --- children[leafNode] " + leafNode.start + ":" + input[leafNode.start]);
@@ -104,6 +103,7 @@ public class SuffixTree {
                     activePoint.activeEdge++;
                     activePoint.activeLength--;
                 }
+                remaining--;
             }
         }
     }
