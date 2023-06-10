@@ -38,6 +38,7 @@ public class SuffixTree {
     }
 
     public void startPhase(int i) {
+        SuffixNode lastInternalNode = null;
         end.end++;
         remaining++;
         while (remaining > 0) {
@@ -51,9 +52,62 @@ public class SuffixTree {
                     remaining--;
                 }
             } else {
-                // TODO REMOVE LATER
+                SuffixNode edge = activePoint.activeNode.children[input[activePoint.activeEdge]];
+                char c = getNextCharacter(edge);
+                if (c ==  input[i]) {
+                    if (lastInternalNode != null) {
+                        lastInternalNode.suffixLink = edge;
+                    }
+                    walkDown(i);
+                    break;
+                } else {
+                    int currentStart = edge.start;
+                    edge.start += activePoint.activeLength;
+                    SuffixNode internalNode = new SuffixNode(currentStart, new End(edge.start - 1));
+                    SuffixNode leafNode = new SuffixNode(i, end);
+                    internalNode.children[input[edge.start]] = edge;
+                    internalNode.children[input[leafNode.start]] = leafNode;
+                    internalNode.index = -1;
+                    activePoint.activeNode.children[input[internalNode.start]] = internalNode;
+
+                    if (lastInternalNode != null) {
+                        lastInternalNode.suffixLink = internalNode;
+                    }
+                    lastInternalNode = internalNode;
+                    internalNode.suffixLink = root;
+                }
+                if (activePoint.activeNode != root) {
+                    activePoint.activeNode = activePoint.activeNode.suffixLink;
+                } else {
+                    activePoint.activeEdge++;
+                    activePoint.activeLength--;
+                }
                 remaining--;
             }
         }
     }
+
+    private void walkDown(int index) {
+        SuffixNode edge = activePoint.activeNode.children[input[activePoint.activeEdge]];
+        if (edgeSize(edge) < activePoint.activeLength) {
+            activePoint.activeNode = edge;
+            activePoint.activeLength = activePoint.activeLength - edgeSize(edge);
+            activePoint.activeEdge = edge.children[input[index]].start;
+        } else {
+            activePoint.activeLength++;
+        }
+    }
+
+    private char getNextCharacter(SuffixNode edge) {
+        if (edgeSize(edge) >= activePoint.activeLength) {
+            return input[edge.start + activePoint.activeLength];
+        }
+        return '%';
+    }
+
+    public int edgeSize(SuffixNode edge) {
+        return (edge.end.end - edge.start);
+    }
+
+
 }
