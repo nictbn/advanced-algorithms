@@ -46,10 +46,12 @@ public class SuffixTree {
                 if (activePoint.activeNode.children[input[i]] != null) {
                     activePoint.activeEdge = activePoint.activeNode.children[input[i]].start;
                     activePoint.activeLength++;
+                    System.out.println("Phase(" + input[i] + ") Rule 3 extension applied(" + activePoint.activeNode.start + ":" + input[i] + ")");
                     break;
                 } else {
                     root.children[input[i]] = new SuffixNode(i, end);
                     remaining--;
+                    System.out.println("Phase(" + input[i] + ") Rule 2 extension created(" + activePoint.activeNode.start + ":" + input[i] + ")");
                 }
             } else {
                 SuffixNode edge = activePoint.activeNode.children[input[activePoint.activeEdge]];
@@ -58,6 +60,7 @@ public class SuffixTree {
                     if (lastInternalNode != null) {
                         lastInternalNode.suffixLink = edge;
                     }
+                    System.out.println("Phase(" + input[i] + ") Rule 3 extension start(" + edge.start + ":" + input[edge.start] + ") Next Char match: " + i + ":" + input[i] + "-" + c);
                     walkDown(i);
                     break;
                 } else {
@@ -75,6 +78,9 @@ public class SuffixTree {
                     }
                     lastInternalNode = internalNode;
                     internalNode.suffixLink = root;
+                    System.out.println("Phase(" + input[i] + ") Rule 2 Ext - changed node (" + internalNode.start + "-" + internalNode.end.end + "):" + input[internalNode.start]);
+                    System.out.println("Phase(" + input[i] + ") Rule 2 Ext --- children[edge] " + edge.start + ":" + input[edge.start]);
+                    System.out.println("Phase(" + input[i] + ") Rule 2 Ext --- children[leafNode] " + leafNode.start + ":" + input[leafNode.start]);
                 }
                 if (activePoint.activeNode != root) {
                     activePoint.activeNode = activePoint.activeNode.suffixLink;
