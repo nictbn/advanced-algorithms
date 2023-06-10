@@ -30,7 +30,7 @@ public class SuffixTree {
     }
 
     public void buildSuffixTree() {
-        root = new SuffixNode(0, new End(0));
+        root = new SuffixNode(1, new End(0));
         root.index = -1;
         end = new End(-1);
         activePoint = new ActivePoint(root);
@@ -38,7 +38,9 @@ public class SuffixTree {
         for (int i = 0; i < input.length; i++) {
             startPhase(i);
         }
+        setIndex(root, 0, input.length);
     }
+
 
     public void startPhase(int i) {
         SuffixNode lastInternalNode = null;
@@ -172,6 +174,20 @@ public class SuffixTree {
         }
         for (int i = node.start; i <= node.end.end; i++) {
             result.remove(result.size() - 1);
+        }
+    }
+
+    private void setIndex(SuffixNode root, int val, int size) {
+        if (root == null) {
+            return;
+        }
+        val = val + root.end.end - root.start + 1;
+        if (root.index != -1) {
+            root.index = size - val;
+            return;
+        }
+        for (SuffixNode node : root.children) {
+            setIndex(node, val, size);
         }
     }
 }
